@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rack_in_log_user,rack.in.log user,model_rack_in_log,base.group_user,1,1,1,1
+wb_rack_in.access_rack_in_log_line,access_rack_in_log_line,wb_rack_in.model_rack_in_log_line,base.group_user,1,1,1,1
+wb_rack_in.access_rack_in_user_management,access_rack_in_user_management,wb_rack_in.model_rack_in_user_management,base.group_user,1,1,1,1

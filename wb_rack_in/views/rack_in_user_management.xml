@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_rack_in_user_management_tree" model="ir.ui.view">
+        <field name="name">rack.in.user.management.tree</field>
+        <field name="model">rack.in.user.management</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="not active">
+                <field name="user_type" widget="badge" 
+                       decoration-info="user_type == 'mobile_only'" 
+                       decoration-success="user_type == 'odoo_linked'"/>
+                <field name="user_name"/>
+                <field name="email"/>
+                <field name="role" widget="badge" 
+                       decoration-warning="role == 'picker'" 
+                       decoration-primary="role == 'manager'"/>
+                <field name="pin_code_number" optional="hide"/>
+                <field name="active" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_rack_in_user_management_search" model="ir.ui.view">
+        <field name="name">rack.in.user.management.search</field>
+        <field name="model">rack.in.user.management</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="user_name"/>
+                <field name="email"/>
+                <field name="role"/>
+                <field name="user_type"/>
+                <field name="odoo_user_id"/>
+                
+                <!-- Filters -->
+                <filter string="Active Users" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Archived Users" name="archived" domain="[('active', '=', False)]"/>
+                
+                <separator/>
+                <filter string="Mobile Users" name="mobile_users" domain="[('user_type', '=', 'mobile_only')]"/>
+                <filter string="Odoo Users" name="odoo_users" domain="[('user_type', '=', 'odoo_linked')]"/>
+                
+                <separator/>
+                <filter string="Managers" name="managers" domain="[('role', '=', 'manager')]"/>
+                <filter string="Pickers" name="pickers" domain="[('role', '=', 'picker')]"/>
+                
+                <!-- Group By -->
+                <group expand="0" string="Group By">
+                    <filter string="User Type" name="group_user_type" context="{'group_by': 'user_type'}"/>
+                    <filter string="Role" name="group_role" context="{'group_by': 'role'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'active'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_rack_in_user_management_form" model="ir.ui.view">
+        <field name="name">rack.in.user.management.form</field>
+        <field name="model">rack.in.user.management</field>
+        <field name="arch" type="xml">
+            <form string="Rack In User">
+                <!-- User Type Selection -->
+                <group name="user_type_selection" string="User Type">
+                    <field name="user_type" widget="radio" options="{'horizontal': true}"/>
+                    <field name="existing_odoo_user_ids" invisible="1"/>
+                </group>
+                
+                <!-- User Information -->
+                <group name="user_info" string="User Information">
+                    <!-- Odoo User Selection (Only for odoo_linked type) -->
+                    <field name="odoo_user_id" 
+                           invisible="user_type != 'odoo_linked'"
+                           required="user_type == 'odoo_linked'"
+                           context="{'search_default_available_only': 1}"
+                           options="{'no_create': True, 'no_open': True}"/>
+                    
+                    <!-- User Details -->
+                    <field name="user_name" 
+                           readonly="user_type == 'odoo_linked'"
+                           required="user_type == 'mobile_only'"/>
+                    <field name="email" widget="email" 
+                           readonly="user_type == 'odoo_linked'"
+                           required="user_type == 'mobile_only'"/>
+                    <field name="role" widget="radio" options="{'horizontal': true}"/>
+                    <field name="pin_code_number" invisible="role == 'manager'"/>
+                    <field name="partner_id" invisible="1"/>
+                </group>
+                
+                <!-- Action Buttons -->
+                <group name="action_buttons" string="Actions" invisible="role == 'manager'">
+                    <button string="Reset PIN" type="object" name="action_reset_pin_code_number"
+                            class="btn-primary" icon="fa-refresh"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+
+     <!-- Action -->
+    <record id="action_rack_in_user_management" model="ir.actions.act_window">
+        <field name="name">Rack In Users</field>
+        <field name="res_model">rack.in.user.management</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_rack_in_user_management_search"/>
+        <field name="context">{'search_default_active': 1, 'search_default_mobile_users': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create Rack In User</p>
+            <p>
+                Manage users who can access the RackIn mobile application.<br/>
+                Create mobile-only users without requiring Odoo licenses.
+            </p>
+        </field>
+    </record>
+
+    <!-- Archive Action -->
+    <record id="action_rack_in_user_archive" model="ir.actions.server">
+        <field name="name">Archive Users</field>
+        <field name="model_id" ref="model_rack_in_user_management"/>
+        <field name="binding_model_id" ref="model_rack_in_user_management"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">records.action_archive()</field>
+    </record>
+
+    <!-- Unarchive Action -->
+    <record id="action_rack_in_user_unarchive" model="ir.actions.server">
+        <field name="name">Unarchive Users</field>
+        <field name="model_id" ref="model_rack_in_user_management"/>
+        <field name="binding_model_id" ref="model_rack_in_user_management"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">records.action_unarchive()</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_rack_in_user_management" name="User Management"
+              parent="menu_rack_in_root" sequence="30"
+              action="action_rack_in_user_management"/>
+</odoo>
