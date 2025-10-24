@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.actions.client" id="dashboard">
+            <field name="name">Dashboard</field>
+            <field name="tag">wb_rack_in.dashboard</field>
+        </record>
+        <menuitem id="menu_rack_in_dashboard"
+                  name="Dashboard"
+                  parent="wb_rack_in.menu_rack_in_root"
+                  action="wb_rack_in.dashboard"
+                  sequence="20"/>
+    </data>
+</odoo>
+

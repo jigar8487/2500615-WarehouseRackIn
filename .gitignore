@@ -1,6 +1,6 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[codz]
+*.py[cod]
 *$py.class
 
 # C extensions
@@ -171,9 +171,9 @@ cython_debug/
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
-#  and can be added to the global gitignore or merged into this file.  For a more nuclear
+#  and can be added to the global gitignore or merged into this project.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
-#.idea/
+.idea/
 
 # Abstra
 # Abstra is an AI-powered process automation framework.
@@ -182,11 +182,8 @@ cython_debug/
 .abstra/
 
 # Visual Studio Code
-#  Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore 
-#  that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
-#  and can be added to the global gitignore or merged into this file. However, if you prefer, 
-#  you could uncomment the following to ignore the entire vscode folder
-# .vscode/
+.vscode/
+*.code-workspace
 
 # Ruff stuff:
 .ruff_cache/
@@ -205,3 +202,109 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# =============================================================================
+# ODOO SPECIFIC IGNORES
+# =============================================================================
+
+# Odoo Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Odoo session files
+.odoo_session
+
+# Odoo logs
+*.log
+odoo.log
+odoo-server.log
+
+# Odoo configuration files (sensitive)
+odoo.conf
+.odoorc
+
+# Odoo filestore (database files)
+filestore/
+
+# Odoo addons path (if using external addons)
+addons/
+
+# Odoo database dumps
+*.sql
+*.dump
+*.backup
+
+# Odoo static assets (generated)
+static/
+web/static/
+
+# Node modules (for Odoo web assets)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Temporary files
+*.tmp
+*.temp
+*~
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*.orig
+*.swp
+*.swo
+
+# IDE and editor files
+*.sublime-*
+.vscode/settings.json
+.vscode/launch.json
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Development and testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Local development overrides
+local_settings.py
+local_config.py
+
+# Database-specific files
+*.sqlite
+*.db
+
+# Migration files (if auto-generated)
+migrations/
+
+# Compiled translations
+locale/*/LC_MESSAGES/*.mo
+
+# Asset bundles (if using webpack/etc)
+*.bundle.js
+*.bundle.css
+
+# Certificate files
+*.pem
+*.key
+*.crt
+*.csr
+
+# Docker files (if using containerization)
+docker-compose.override.yml
+.dockerignore
+
+# Git specific
+.git/
+.gitattributes
