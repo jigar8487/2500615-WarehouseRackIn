@@ -1,6 +1,6 @@
 # Warehouse RackIn Management System
 
-A comprehensive Odoo 17 module providing complete warehouse rack-in workflow management with mobile API integration and web dashboard for inventory operations.
+A comprehensive Odoo 18 module providing complete warehouse rack-in workflow management with mobile API integration and web dashboard for inventory operations.
 
 ## 🎯 Project Overview
 
@@ -9,11 +9,11 @@ This project contains the **WB Warehouse RackIn** module (`wb_rack_in`) - a prod
 ## 📋 Module Information
 
 - **Module Name:** `wb_rack_in`
-- **Version:** 17.0.1.0.0
+- **Version:** 18.0.1.0.0
 - **Category:** Inventory/Inventory
 - **License:** LGPL-3
 - **Author:** Wan Buffer Services
-- **Odoo Version:** 17.0+
+- **Odoo Version:** 18.0+
 
 ## 🚀 Key Features
 
@@ -27,7 +27,7 @@ This project contains the **WB Warehouse RackIn** module (`wb_rack_in`) - a prod
 - **Real-time KPIs** (Total Operations, Total Quantity)
 - **Advanced filtering** (Search, Source, Date range)
 - **Server-side pagination** for performance
-- **Responsive Owl component** architecture
+- **OWL component** architecture for Odoo 18
 
 ### 📊 Inventory Management
 - **Staging location management** with quantity tracking
@@ -45,9 +45,8 @@ wb_rack_in/
 ├── README.md                       # Detailed module documentation
 ├── controllers/                    # HTTP controllers
 │   ├── __init__.py
-│   ├── dashboard.py               # Dashboard statistics endpoint
-│   ├── mobile_api.py              # Mobile JSON-RPC API endpoints
-│   └── dashboard_backup.py        # Legacy dashboard helpers
+│   ├── dashboard.py               # Dashboard statistics and API endpoints
+│   └── mobile_api.py              # Mobile JSON-RPC API endpoints
 ├── data/                          # Data files
 │   ├── rack_in_sequence.xml       # Sequence for rack-in numbering
 │   └── cleanup_odoo_users.xml.disabled
@@ -60,8 +59,9 @@ wb_rack_in/
 ├── security/                      # Access rights
 │   └── ir.model.access.csv        # Model access permissions
 ├── static/src/                    # Frontend assets
-│   ├── dashboard_template.xml     # Owl template
-│   └── rack_in_list_dashboard.js  # Dashboard JavaScript
+│   ├── dashboard_template.xml     # OWL template for dashboard
+│   ├── rack_in_list_dashboard.js  # Dashboard component (OWL)
+│   └── rack_in_dashboard_loader.js # Client action registration
 └── views/                         # XML views
     ├── rack_in_dashboard_template.xml    # Dashboard menu
     ├── rack_in_log_views.xml            # Log views
@@ -73,7 +73,7 @@ wb_rack_in/
 
 The module requires the following Odoo modules:
 - `base` - Core Odoo functionality
-- `web` - Web interface and Owl framework
+- `web` - Web interface and OWL framework
 - `stock` - Inventory management
 - `purchase` - Purchase order integration
 - `mail` - Mail tracking and activities
@@ -191,6 +191,6 @@ This project is licensed under LGPL-3 - see the module manifest for details.
 
 ---
 
-**Last Updated:** October 24, 2025  
+**Last Updated:** October 27, 2025  
 **Project Status:** ✅ Production Ready  
-**Module Version:** 17.0.1.0.0
+**Module Version:** 18.0.1.0.0
