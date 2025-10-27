@@ -14,7 +14,7 @@ class RackInUserManagement(models.Model):
     user_type = fields.Selection([
         ('mobile_only', 'Mobile User'),
         ('odoo_linked', 'Odoo User')
-    ], string='User Type', required=True, default='mobile_only', tracking=True)
+    ], string='User Type', required=True, default='mobile_only')
     
     # For Odoo linked users  
     odoo_user_id = fields.Many2one(
@@ -30,9 +30,8 @@ class RackInUserManagement(models.Model):
                             string='Role', required=True, default='picker')
     email = fields.Char(string='Email', store=True, required=True)
     pin_code_number = fields.Char(string='PIN Code', size=4, readonly=True,
-                                  tracking=True, 
                                   default=lambda self: self._generate_pin())
-    active = fields.Boolean(string='Active', default=True, tracking=True)
+    active = fields.Boolean(string='Active', default=True)
     
     # Keep for backward compatibility
     partner_id = fields.Many2one('res.partner', string='Related Customer', readonly=True)
@@ -228,34 +227,34 @@ class RackInUserManagement(models.Model):
         return self.write({'active': True})
 
     # ========== OVERRIDE CREATE ==========
-    @api.model
-    def create(self, vals):
-        user_type = vals.get('user_type', 'mobile_only')
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            user_type = vals.get('user_type', 'mobile_only')
+            
+            if user_type == 'mobile_only':
+                # All mobile user data is stored directly in the database
+                # No partner needed for mobile users
+                vals.pop('partner_id', None)
+                    
+            elif user_type == 'odoo_linked':
+                # Handle Odoo user linking
+                if vals.get('odoo_user_id'):
+                    odoo_user = self.env['res.users'].browse(vals['odoo_user_id'])
+                    vals['user_name'] = odoo_user.name
+                    vals['email'] = odoo_user.email or odoo_user.login
+                    
+                    # Create partner for Odoo users for backward compatibility
+                    partner = self.env['res.partner'].create({
+                        'name': vals.get('user_name'),
+                        'email': vals.get('email'),
+                        'is_company': False,
+                        'customer_rank': 1,
+                    })
+                    vals['partner_id'] = partner.id
         
-        if user_type == 'mobile_only':
-            # All mobile user data is stored directly in the database
-            # No partner needed for mobile users
-            vals.pop('partner_id', None)
-                
-        elif user_type == 'odoo_linked':
-            # Handle Odoo user linking
-            if vals.get('odoo_user_id'):
-                odoo_user = self.env['res.users'].browse(vals['odoo_user_id'])
-                vals['user_name'] = odoo_user.name
-                vals['email'] = odoo_user.email or odoo_user.login
-                
-                # Create partner for Odoo users for backward compatibility
-                partner = self.env['res.partner'].create({
-                    'name': vals.get('user_name'),
-                    'email': vals.get('email'),
-                    'is_company': False,
-                    'customer_rank': 1,
-                })
-                vals['partner_id'] = partner.id
-        
-        # Create the Odoo record
-        record = super(RackInUserManagement, self).create(vals)
-        return record
+        # Create the Odoo records
+        return super(RackInUserManagement, self).create(vals_list)
 
     # ========== OVERRIDE WRITE ==========
     def write(self, vals):

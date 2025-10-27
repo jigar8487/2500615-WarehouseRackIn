@@ -1,6 +1,6 @@
 {
     'name': 'Warehouse RackIn',
-    'version': '17.0.1.0.0',
+    'version': '18.0.1.0.0',
     'category': 'Inventory/Inventory',
     'summary': 'Complete Warehouse RackIn workflow with mobile API and dashboard',
     'license': 'LGPL-3',
@@ -40,7 +40,11 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'wb_rack_in/static/src/**/*',
+            'wb_rack_in/static/src/rack_in_dashboard_loader.js',
+            'wb_rack_in/static/src/rack_in_list_dashboard.js',
+        ],
+        'web.assets_qweb': [
+            'wb_rack_in/static/src/dashboard_template.xml',
         ],
     },
     'post_init_hook': 'post_init_hook',

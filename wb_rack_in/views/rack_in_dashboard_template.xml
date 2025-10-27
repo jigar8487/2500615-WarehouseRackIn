@@ -10,6 +10,9 @@
                   parent="wb_rack_in.menu_rack_in_root"
                   action="wb_rack_in.dashboard"
                   sequence="20"/>
+        <!-- Cleanup: remove any previously created 'new' dashboard records -->
+        <delete id="dashboard_insights" model="ir.actions.client"/>
+        <delete id="menu_rack_in_dashboard_insights" model="ir.ui.menu"/>
     </data>
 </odoo>
 

@@ -74,11 +74,12 @@ class RackInLog(models.Model):
             rec.rack_quant_id = quant
 
     # ========== DEFAULT CREATE ==========
-    @api.model
-    def create(self, vals):
-        if vals.get('rack_process', 'New') == 'New':
-            vals['rack_process'] = self.env['ir.sequence'].next_by_code('rack.in.log') or '/'
-        return super(RackInLog, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('rack_process', 'New') == 'New':
+                vals['rack_process'] = self.env['ir.sequence'].next_by_code('rack.in.log') or '/'
+        return super(RackInLog, self).create(vals_list)
 
     # ========== PERFORMED BY DISPLAY COMPUTATION ==========
     @api.depends('performed_by_user', 'performed_by')
